@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Acrescenta `import 'package:lucena_ui/lucena_ui_board.dart'` nos arquivos do app que
-o analyzer acusa por usar PositionBoard e afins (parte do pacote que usa chessground).
+"""Acrescenta um import nos arquivos do app que o analyzer acusa por usar um símbolo.
 
-Uso: python3 adicionar_board.py APP SIMBOLO [SIMBOLO...]   (SIMBOLO: nome ou getter)
+Uso: python3 adicionar_board.py APP IMPORT SIMBOLO [SIMBOLO...]
+  IMPORT: `board` (lucena_ui_board.dart), `ui` (lucena_ui.dart) ou o URI inteiro
+  SIMBOLO: nome do identificador, do getter ou do método acusado
 """
 import os
 import re
@@ -12,7 +13,8 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 import migrar_imports as m  # noqa: E402
 
-app, simbolos = sys.argv[1], sys.argv[2:]
+app, imp, simbolos = sys.argv[1], sys.argv[2], sys.argv[3:]
+imp = {'board': m.BOARD_IMPORT, 'ui': m.PKG_IMPORT}.get(imp, f"import '{imp}';\n")
 saida = subprocess.run(["flutter", "analyze"], cwd=app, capture_output=True, text=True).stdout
 arqs = set()
 for linha in saida.splitlines():
@@ -26,5 +28,5 @@ for linha in saida.splitlines():
 for a in sorted(arqs):
     p = os.path.join(app, a)
     t = open(p, encoding="utf-8").read()
-    open(p, "w", encoding="utf-8").write(m.inserir_import(t, m.BOARD_IMPORT))
+    open(p, "w", encoding="utf-8").write(m.inserir_import(t, imp))
 print(f"{len(arqs)} arquivos com o import do board")

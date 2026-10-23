@@ -27,7 +27,9 @@ for arq in todos:
         os.path.relpath(o, os.path.dirname(arq)).replace(os.sep, "/")
         for o in todos if o != arq
     )
-    imports = "".join(f"import '{r}';\n" for r in rels)
+    imports = "".join(
+        f"import '{r}';\n" for r in rels if f"import '{r}';\n" not in t
+    )
     for b in BARRELS:
         t = t.replace(b, imports if b == BARREL else "")
     open(arq, "w", encoding="utf-8").write(t)
