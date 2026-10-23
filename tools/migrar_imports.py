@@ -8,6 +8,7 @@ entre arquivos movidos viram relativos. Atualiza o barrel `lib/lucena_ui.dart`.
 Uso:
   python3 migrar_imports.py --app APP --pkg PKG MOVES.txt
 MOVES.txt: uma linha por arquivo, `caminho/no/app.dart -> caminho/no/pacote.dart`
+(`~>` no lugar de `->` quando o arquivo do pacote já foi escrito à mão: só apaga o do app)
 (caminhos relativos às raízes; `lib/...` do app vira `lib/src/...` do pacote;
 arquivos de `test/` vão para `test/` do pacote e importam o barrel).
 `--dry-run` só relata.
@@ -58,11 +59,16 @@ def main():
     a = ap.parse_args()
 
     moves = {}
+    prontos = set()
     for linha in open(a.moves, encoding="utf-8"):
         linha = linha.strip()
         if not linha or linha.startswith("#"):
             continue
-        antigo, novo = [p.strip() for p in linha.split("->")]
+        if "~>" in linha:  # já escrito à mão no pacote: só apaga o antigo
+            antigo, novo = [p.strip() for p in linha.split("~>")]
+            prontos.add(antigo)
+        else:
+            antigo, novo = [p.strip() for p in linha.split("->")]
         moves[antigo] = novo
     erros = []
 
@@ -102,6 +108,10 @@ def main():
     # 2. Move e reescreve os arquivos movidos.
     for antigo, novo_rel in moves.items():
         src = os.path.join(a.app, antigo)
+        if antigo in prontos:
+            if not a.dry_run:
+                subprocess.run(["git", "-C", a.app, "rm", "-q", "-f", antigo], check=True)
+            continue
         texto = open(src, encoding="utf-8").read()
         eh_teste = not antigo.startswith("lib/")
 

@@ -3,6 +3,10 @@
 /// Único arquivo público: tudo o que está em `src/` é exportado daqui.
 library;
 
+export 'src/board/board_appearance.dart';
+export 'src/board/board_colors.dart';
+export 'src/board/piece_style.dart';
+export 'src/board/position_board.dart';
 export 'src/keys/core_keys.dart';
 export 'src/keys/sheet_keys.dart';
 export 'src/theme/app_accent.dart';
