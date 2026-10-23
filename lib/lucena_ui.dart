@@ -5,6 +5,7 @@ library;
 
 export 'src/board/board_appearance.dart';
 export 'src/board/board_colors.dart';
+export 'src/board/fen_board_view.dart';
 export 'src/board/piece_style.dart';
 export 'src/cards/character_avatar.dart';
 export 'src/cards/goal_style.dart';
