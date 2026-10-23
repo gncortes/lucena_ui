@@ -2,6 +2,7 @@ import 'package:chessground/chessground.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lucena_ui/lucena_ui.dart';
+import 'package:lucena_ui/lucena_ui_board.dart';
 
 const _fen = '8/8/8/4k3/8/4K3/4P3/8 w - - 0 1';
 const _board = Key('teste.board');

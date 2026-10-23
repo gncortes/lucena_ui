@@ -14,15 +14,20 @@ for r, _, fs in os.walk(src):
     for f in fs:
         if f.endswith(".dart"):
             todos.append(os.path.join(r, f))
-BARREL = "import 'package:lucena_ui/lucena_ui.dart';\n"
+BARRELS = [
+    "import 'package:lucena_ui/lucena_ui.dart';\n",
+    "import 'package:lucena_ui/lucena_ui_board.dart';\n",
+]
 for arq in todos:
     t = open(arq, encoding="utf-8").read()
-    if BARREL not in t:
+    BARREL = next((b for b in BARRELS if b in t), None)
+    if BARREL is None:
         continue
     rels = sorted(
         os.path.relpath(o, os.path.dirname(arq)).replace(os.sep, "/")
         for o in todos if o != arq
     )
     imports = "".join(f"import '{r}';\n" for r in rels)
-    t = t.replace(BARREL, imports)
+    for b in BARRELS:
+        t = t.replace(b, imports if b == BARREL else "")
     open(arq, "w", encoding="utf-8").write(t)

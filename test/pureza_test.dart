@@ -27,4 +27,35 @@ void main() {
     }
     expect(violacoes, isEmpty);
   });
+
+  test(
+    'lucena_ui.dart não alcança chessground nem dartchess (compila na web)',
+    () {
+      // O dartchess usa inteiros de 64 bits e não compila com dart2js.
+      final visitados = <String>{};
+      final fila = <String>['lib/lucena_ui.dart'];
+      final diretos = RegExp(
+        r"^\s*(?:import|export)\s+'([^']+)'",
+        multiLine: true,
+      );
+      final violacoes = <String>[];
+      while (fila.isNotEmpty) {
+        final atual = fila.removeLast();
+        if (!visitados.add(atual)) continue;
+        final texto = File(atual).readAsStringSync();
+        for (final m in diretos.allMatches(texto)) {
+          final alvo = m.group(1)!;
+          if (alvo.startsWith('package:chessground') ||
+              alvo.startsWith('package:dartchess')) {
+            violacoes.add('$atual -> $alvo');
+          } else if (alvo.startsWith('package:lucena_ui/')) {
+            fila.add('lib/${alvo.substring('package:lucena_ui/'.length)}');
+          } else if (!alvo.contains(':')) {
+            fila.add(File(atual).parent.uri.resolve(alvo).toFilePath());
+          }
+        }
+      }
+      expect(violacoes, isEmpty);
+    },
+  );
 }

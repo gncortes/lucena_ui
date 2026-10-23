@@ -1,5 +1,3 @@
-import 'package:chessground/chessground.dart';
-
 /// Conjunto de peças. Só entram conjuntos de licença livre, compatível com a
 /// AGPL do app (ver `THIRD-PARTY-NOTICES.md`).
 enum PieceStyle {
@@ -28,22 +26,4 @@ enum PieceStyle {
 
   static PieceStyle fromCode(String? code) =>
       values.asNameMap()[code] ?? fallback;
-}
-
-/// As imagens de cada conjunto de peças.
-extension PieceStyleAssets on PieceStyle {
-  PieceAssets get assets => switch (this) {
-    PieceStyle.cburnett => PieceSet.cburnettAssets,
-    PieceStyle.merida => PieceSet.meridaAssets,
-    PieceStyle.chessnut => PieceSet.chessnutAssets,
-    PieceStyle.pirouetti => PieceSet.pirouettiAssets,
-    PieceStyle.mpchess => PieceSet.mpchessAssets,
-    PieceStyle.firi => PieceSet.firiAssets,
-    PieceStyle.rhosgfx => PieceSet.rhosgfxAssets,
-    PieceStyle.fantasy => PieceSet.fantasyAssets,
-    PieceStyle.celtic => PieceSet.celticAssets,
-    PieceStyle.spatial => PieceSet.spatialAssets,
-    PieceStyle.pixel => PieceSet.pixelAssets,
-    PieceStyle.letter => PieceSet.letterAssets,
-  };
 }

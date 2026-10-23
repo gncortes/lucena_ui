@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_shape.dart';
 import 'board_appearance.dart';
-import 'board_colors.dart';
-import 'piece_style.dart';
+import 'board_colors_scheme.dart';
+import 'piece_style_assets.dart';
 
 /// A miniatura de uma posição (FEN), vista pelo lado que joga (ou pelo
 /// [orientation] pedido), com as cores e as peças da [BoardAppearance] do contexto.
