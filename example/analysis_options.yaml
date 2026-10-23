@@ -1,0 +1,5 @@
+analyzer:
+  errors: {}
+  exclude:
+    - build/**
+    - web/**
