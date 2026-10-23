@@ -1,0 +1,12 @@
+name: lucena_ui_example
+description: "App mínimo que prova que o lucena_ui compila na web."
+publish_to: 'none'
+
+environment:
+  sdk: ^3.13.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  lucena_ui:
+    path: ..
